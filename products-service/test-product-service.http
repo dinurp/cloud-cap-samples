@@ -1,5 +1,19 @@
 #https://github.com/Huachao/vscode-restclient/blob/master/README.md
 
+#Excercise 2
+curl -X POST http://localhost:8080/odata/v4/AdminService/Categories \
+-H "Content-Type: application/json" \
+-d '{"ID": 1, "name": "TechEd", "descr": "TechEd related topics", "children": [{"ID": 10, "name": "CAP Java", "descr": "Run on Java"}, {"ID": 11, "name": "CAP Node.js", "descr": "Run on Node.js"}]}' 
+###
+GET http://localhost:8080/odata/v4/AdminService/Categories(10)  HTTP/1.0
+###
+GET http://localhost:8080/odata/v4/AdminService/Categories?$expand=children
+###
+GET http://localhost:8080/odata/v4/AdminService/Categories(10)?$expand=parent
+###
+GET http://localhost:8080/odata/v4/AdminService/Categories(1)?$expand=children
+
+#####
 #Excercise 1
 GET http://localhost:8080/odata/v4/AdminService/Products HTTP/1.1
 
