@@ -1,0 +1,13 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "database": ".\\bookstore/sqlite.db",
+            "dialect": "SQLite",
+            "isActive": true,
+            "isConnected": true,
+            "name": "bookstore"
+        }
+    ],
+    "sqltools.autoConnectTo": ""
+}
