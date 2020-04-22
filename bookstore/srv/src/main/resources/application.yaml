@@ -2,7 +2,7 @@
 spring:
   profiles: default
   datasource:
-    url: "jdbc:sqlite:c:\\Work\\sap-cp-experiments\\cap-cloud-samples-java\\bookstore\\sqlite.db"
+    url: "jdbc:sqlite:c:\\Work\\sap-cp-experiments\\cap-walkthrough-java\\bookstore\\sqlite.db"
     driver-class-name: org.sqlite.JDBC
     initialization-mode: never
     hikari:

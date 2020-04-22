@@ -1,3 +1,43 @@
+
+#Excercise 4
+###
+GET http://localhost:8080/odata/v4/BooksService/Books(abed2f7a-c50e-4bc5-89fd-9a00a54b4b16) HTTP/1.1
+
+###
+curl -X POST http://localhost:8080/odata/v4/OrdersService/Orders \
+-H "Content-Type: application/json" \
+-d '{"ID": "60425a69-48b9-45f1-b6d2-687d55355e03", "currency_code": "USD"}'
+
+###
+curl -X POST http://localhost:8080/odata/v4/OrdersService/OrderItems \
+-H "Content-Type: application/json" \
+-d '{"parent_ID": "60425a69-48b9-45f1-b6d2-687d55355e03", "book_ID": "abed2f7a-c50e-4bc5-89fd-9a00a54b4b16", "amount": 10}' 
+
+###
+GET http://localhost:8080/odata/v4/OrdersService/Orders(60425a69-48b9-45f1-b6d2-687d55355e03)?$expand=items
+
+###
+curl -X POST http://localhost:8080/odata/v4/OrdersService/Orders \
+-H "Content-Type: application/json" \
+-d '{"ID": "017f4ac4-7f07-4c07-a009-3168317a10cf", "currency_code": "USD"}' 
+
+###
+curl -X POST http://localhost:8080/odata/v4/OrdersService/OrderItems \
+-H "Content-Type: application/json" \
+-d '{"parent_ID": "017f4ac4-7f07-4c07-a009-3168317a10cf", "book_ID": "fd0c5fda-8811-4e20-bcff-3a776abc290a", "amount": 4}' 
+
+###
+GET http://localhost:8080/odata/v4/OrdersService/Orders?$expand=items
+
+
+###
+GET http://localhost:8080/odata/v4/OrdersService/OrderItems?$expand=parent
+
+###
+GET http://localhost:8080/odata/v4/OrdersService/Orders(017f4ac4-7f07-4c07-a009-3168317a10cf)?$expand=items
+
+#Excercise 3
+###
 GET http://localhost:8080/odata/v4/BooksService/Books HTTP/1.1
 
 ###
