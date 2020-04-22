@@ -1,0 +1,11 @@
+#https://github.com/Huachao/vscode-restclient/blob/master/README.md
+
+#Excercise 1
+GET http://localhost:8080/odata/v4/AdminService/Products HTTP/1.1
+
+#####
+POST http://localhost:8080/odata/v4/AdminService/Products HTTP/1.1
+content-type: application/json
+
+{"ID": 42, "title": "Awesome product", "descr": "It is really really awesome!"}
+
