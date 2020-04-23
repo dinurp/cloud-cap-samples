@@ -15,5 +15,14 @@
         "build": "cds build/all --clean",
         "deploy": "cds deploy",
         "start": "cds run"
+    },
+    "cds" : {
+        "requires" : {
+            "messaging" : {
+                "credentials" : {
+                    "file": "default"
+                }
+            }
+        }
     }
 }

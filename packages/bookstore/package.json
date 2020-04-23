@@ -24,7 +24,8 @@
           "model": "reviews-service",
           "kind": "odata",
           "credentials": {
-            "file": "default"
+            "file": "default",
+            "url" : "http://localhost:4001/reviews"
           }
         }
       }
