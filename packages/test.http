@@ -1,0 +1,58 @@
+
+## Exercise 03
+###
+GET http://localhost:4005/catalog/Reviews 
+
+### not allowed
+curl -X POST http://localhost:4005/catalog/Reviews \
+-H "Content-Type: application/json" \
+-d '{
+  "ID":"401",
+  "subject":"Wuthering Heights",
+  "rating":2,
+  "title":"Great book!"
+}'
+
+
+## Excercise 02
+
+###
+curl -X POST http://localhost:4001/reviews/Reviews \
+-H "Content-Type: application/json" \
+-d '{
+"ID":"202",
+"subject":"Wuthering Heights",
+"rating":5,
+"title":"My favourite book!"
+}'
+
+###
+GET http://localhost:4001/reviews/Reviews 
+
+
+###
+curl -X POST http://localhost:4001/reviews/Reviews \
+-H "Content-Type: application/json" \
+-d '{
+"ID":"201",
+"subject":"Wuthering Heights",
+"rating":2,
+"title":"Great book!"
+}'
+
+###
+curl -X POST http://localhost:4001/reviews/like \
+-H "Content-Type: application/json" \
+-d '{"review":"201"}'
+
+###
+curl -X POST http://localhost:4001/reviews/unlike \
+-H "Content-Type: application/json" \
+-d '{"review":"201"}'
+
+## Ecercise 01
+
+###
+curl -X POST http://localhost:4005/catalog/Orders \
+-H "Content-Type: application/json;IEEE754Compatible=true" \
+-d '{"ID":1111,"OrderNo":"3","Items":[{"ID":304,"amount":600,"netAmount":"8400","book_ID":"252"}]}'
