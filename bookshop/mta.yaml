@@ -1,0 +1,111 @@
+## Generated mta.yaml based on template version 0.4.0
+## appName = bookshop
+## language=nodejs; multitenant=false
+## approuter=
+_schema-version: '3.1'
+ID: capire.bookshop
+version: 1.0.0
+description: "A simple self-contained bookshop service."
+parameters:
+  enable-parallel-deployments: true
+   
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm install --production
+      - npx -p @sap/cds-dk cds build --production
+
+modules:
+ # --------------------- SERVER MODULE ------------------------
+ - name: bookshop-srv
+ # ------------------------------------------------------------
+   type: nodejs
+   path: gen/srv
+   properties:
+      LOG_LEVEL: debug
+      EXIT: 1  # required by deploy.js task to terminate
+      SAP_JWT_TRUST_ACL: [{"clientid":"*","identityzone":"sap-provisioning"}]  # Trust between server and SaaS Manager
+      NODE_DEBUG: 'instance-manager'
+   requires:
+    # Resources extracted from CAP configuration
+    - name: bookshop-db
+    - name: bookshop-uaa
+    - name: bookshop-smc
+    - name: bookshop-reg 
+   provides:
+    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+      properties:
+        srv-url: ${default-url}
+
+ # -------------------- SIDECAR MODULE ------------------------
+ - name: bookshop-db-deployer
+ # ------------------------------------------------------------
+   type: hdb
+   path: gen/db  
+   parameters:
+     buildpack: nodejs_buildpack
+   requires:
+    # 'hana' and 'xsuaa' resources extracted from CAP configuration
+    - name: bookshop-db
+    - name: bookshop-uaa
+
+
+resources:
+ # services extracted from CAP configuration
+ # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
+# ------------------------------------------------------------
+ - name: bookshop-db
+# ------------------------------------------------------------
+   type: com.sap.xs.hdi-container
+   parameters:
+     service: hana  # or 'hanatrial' on trial landscapes
+     service-plan: hdi-shared
+   properties:
+     hdi-service-name: ${service-name}
+# ------------------------------------------------------------
+ - name: bookshop-uaa
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service: xsuaa
+     service-plan: application  
+     path: ./xs-security.json 
+    #  config:
+    #    xsappname: bookshop-${space}    #  name + space dependency
+    #    tenant-mode: dedicated
+
+
+ - name: bookshop-smc
+   type: org.cloudfoundry.managed-service
+   requires:
+    - name: bookshop-uaa
+   parameters:
+      service: service-manager
+      service-plan: container
+      polling_timeout_seconds: 240
+      config:
+         acquireTimeoutMillis: 9000
+         polling_timeout_seconds: 480
+         #database_id: 9e54746d-8734-4889-a18b-7f16c3a29517
+
+ - name: bookshop-reg
+   type: org.cloudfoundry.managed-service
+   requires:
+    - name: bookshop-uaa
+   parameters:
+      service: saas-registry
+      service-plan: application
+      config:
+         xsappname: bookshop
+         appName: bookshop-${org}-${space}
+         displayName: bookshop-${org}-${space}
+         description: 'bookshop Multitenant App'
+         category: 'CAP Category'
+         appUrls:
+            onSubscription: https://${org}-${space}-bookshop-srv.${default-domain}/mtx/v1/provisioning/tenant/{tenantId}
+            onSubscriptionAsync: false
+            onUnSubscriptionAsync: false
+            #callbackTimeoutMillis: 300000    
+
+
